@@ -39,26 +39,3 @@ https://stackoverflow.com/questions/9755721/how-can-building-a-heap-be-on-time-c
 """
 
 
-class Heap:
-    """
-    Heap will be an array where we do the 2i +1, 2i + 2 for finding the left & right
-    children of a node.
-
-    """
-    def __init__(self):
-        self.heap_array = []
-
-    def heap_sort(self):
-        pass
-
-    def heapify(self, arr, n, i):
-        pass
-
-    def insert_in_heap(self):
-        pass
-
-    def delete_from_heap(self):
-        pass
-
-    def priority_queue(self):
-        pass
