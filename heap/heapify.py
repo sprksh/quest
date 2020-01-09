@@ -24,7 +24,7 @@ class Heap:
 
         # build a max heap
         self.build_a_max_heap()
-        print("Max Heap array: %s" % str(self.array))
+        # print("Max Heap array: %s" % str(self.array))
 
         # extract first element recursively
         for i in range(self.array_len - 1, 0, -1):
@@ -42,10 +42,10 @@ class Heap:
         # one thing that heapify ensures is that the top element is
         # the greatest or the smallest but only within that subtree
         if not till:
-            # n is the level till which the list needs to be heapified
+            # till is the level till which the list needs to be heapified
             till = self.array_len
 
-        print("heapifying at  index %s" % i)
+        # print("heapifying at  index %s" % i)
 
         largest_in_subtree_index = i
         left_child_index, right_child_index = 2*i+1, 2*i+2
@@ -90,7 +90,7 @@ class Heap:
 if __name__ == "__main__":
     count = 100
     import random
-    array = [random.randint(0, count) for i in range(count)]
+    array = [random.randint(0, count) for _ in range(count)]
     # array = list(range(count, -1, -1))
     h = Heap(array)
     sorted_array = h.heap_sort()
@@ -99,6 +99,8 @@ if __name__ == "__main__":
 
     """
     Here, note that heapify is an O(1) operation for leaf node that is n/2 of entries and h <~ log(n)
+    overall order is: 1+2+3+...+log(n) = n >> O(n)
+    
     for other entries based on their height in the tree and which are executed by recursive heapify calls log(n) times 
     The count that we are seeing here takes care of the recursive calls also.
     Here, for 1 lakh (1,00,000) count:
