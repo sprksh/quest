@@ -28,23 +28,34 @@ def pow(x, n):
         return u*u
 
 
-def tower_of_hanoi(l):
-
-    class Ring:
-        def __init__(self, size, tower):
-
-
-    first = l.copy()
-    intermediate = []
-    final = []
-    d = {_: first for _ in l}
-    for i in l:
-        pass
+def factorial(n):
+    if n == 1:
+        return 1
+    return n*factorial(n-1)
 
 
+def TowerOfHanoi(n, from_rod, to_rod, aux_rod):
+    if n == 1:
+        print("Move disk 1 from rod", from_rod,"to rod",to_rod)
+        return
+    TowerOfHanoi(n-1, from_rod, aux_rod, to_rod)
+    print("Move disk", n,"from rod",from_rod,"to rod",to_rod)
+    TowerOfHanoi(n-1, aux_rod, to_rod, from_rod)
 
-    if not intermediate or intermediate[-1] < i:
-        intermediate.append(i)
+
+def path_sum(tree, root, val):
+    count = 0
+    s = 0
+    def add_sum(tree, node, s, count):
+        if not node.left and not node.right:
+            if s == val:
+                count += 1
+            s = 0
+        else:
+            add_sum(tree, node.left, s, count)
+            add_sum(tree, node.right, s, count)
+    add_sum(tree, root, s, count)
+
 
 
 
