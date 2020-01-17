@@ -22,7 +22,7 @@ class NQueens:
     def check_if_all_queen_fits_conditions(self, solution_array, n):
         print("\nFor solution array %s" % str(solution_array))
         for row, column in enumerate(solution_array):
-            # check upwards in both diagonal
+            # check in both upwards diagonal
             cl, cr = column, column
             while row > 0:
                 if solution_array[row-1] == cl-1 or solution_array[row-1] == cr+1:
@@ -41,6 +41,54 @@ class NQueens:
         return combs
 
 
+"""
+If you have to copy variables during recursion/backtracking, you are probably going in the wrong direction
+"""
+
+
+def permute1(a, l, r):
+    if l == r:
+        print(a)
+    else:
+        for i in range(l, r + 1):
+            a[l], a[i] = a[i], a[l]
+            permute1(a, l + 1, r)
+            a[l], a[i] = a[i], a[l]  # backtrack
+
+
+def permute2(l):
+    if len(l) == 0:
+        return []
+    elif len(l) == 1:
+        return [l]
+    else:
+        ll = []
+        for i in range(len(l)):
+            x = l[i]
+            xs = l[:i] + l[i+1:]
+            for p in permute2(xs):
+                ll.append([x] + p)
+        return ll
+
+def permute3(l):
+    if len(l) == 0:
+        yield []
+    elif len(l) == 1:
+        yield l
+    else:
+        ll = []
+        for i in range(len(l)):
+            x = l[i]
+            xs = l[:i] + l[i+1:]
+            for p in permute2(xs):
+                yield [x] + p
+
+
 if __name__ == "__main__":
-    solution = NQueens().solve(4)
-    print(solution)
+    # a = NQueens().solve(4)
+    # a = permute1(list(range(4)), 0, 3)
+    # a = permute2(list(range(6)))
+    # print(a)
+    a = permute3(list(range(6)))
+    for i in a:
+        print(i)
