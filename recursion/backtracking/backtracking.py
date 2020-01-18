@@ -1,3 +1,9 @@
+"""
+Backtracking is when you backtrack after recursion
+Examples in n_queens in the bottom section
+"""
+
+
 class newNode:
 
     # Construct to create a new node

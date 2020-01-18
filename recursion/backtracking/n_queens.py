@@ -6,6 +6,9 @@ class NQueens:
     each element will be an integer between 0 - n-1 as the column index of where the queen is
 
     # [1,3,0,2]
+
+    however, this is not a proper solution, A proper solution using backtracking would be to not
+    move ahead in tree if the first few positions fail the basic condition
     """
     def __init__(self):
         self.all_solutions = []
@@ -43,10 +46,12 @@ class NQueens:
 
 """
 If you have to copy variables during recursion/backtracking, you are probably going in the wrong direction
+after a day, if you are copying variable, you are probably doing bfs instead of dfs
 """
 
 
 def permute1(a, l, r):
+    # this is a proper backtracking as ensured by the last line
     if l == r:
         print(a)
     else:
@@ -70,18 +75,49 @@ def permute2(l):
                 ll.append([x] + p)
         return ll
 
+
 def permute3(l):
+    # this and permute2 are not backtracking but plain recursion
     if len(l) == 0:
         yield []
     elif len(l) == 1:
         yield l
     else:
-        ll = []
         for i in range(len(l)):
             x = l[i]
             xs = l[:i] + l[i+1:]
-            for p in permute2(xs):
+            for p in permute3(xs):
                 yield [x] + p
+
+
+def npr(iterable, r, arr=[]):
+    # print(iterable, r, arr)
+    # basically nPr
+    if len(arr) == r:
+        print(arr)
+
+    for i in range(len(iterable)):
+        brr = arr.copy()
+        biterable = iterable.copy()
+        # here these two copies are enabling backtracking
+        # but there can be a better way
+        # is it converting things in bfs rather than dfs?
+        brr.append(biterable.pop(i))
+        npr(biterable, r, brr)
+
+
+def npr2(iterable, r, arr=[]):
+    if len(arr) == r:
+        print(arr)
+
+    for i in range(len(iterable)):
+        x = iterable.pop(i)
+        arr.append(x)
+        npr(iterable, r, arr)
+        # below two lines make it backtrack
+        iterable.insert(i, x)
+        arr.pop()
+
 
 
 if __name__ == "__main__":
@@ -89,6 +125,9 @@ if __name__ == "__main__":
     # a = permute1(list(range(4)), 0, 3)
     # a = permute2(list(range(6)))
     # print(a)
-    a = permute3(list(range(6)))
-    for i in a:
-        print(i)
+    # a = permute3(list(range(6)))
+    # for i in a:
+    #     print(i)
+    # npr([0,1,2,3,4,5], 6)
+    npr2([0, 1, 2, 3, 4, 5], 6)
+
