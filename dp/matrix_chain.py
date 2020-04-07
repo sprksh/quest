@@ -12,6 +12,8 @@ B = m2xn2
 
 for optimal multiplication
 m1*n2 should be minimum
+
+Its a substring problem: eric demain: E:21, 12:00
 """
 
 
