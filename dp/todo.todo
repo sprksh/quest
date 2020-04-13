@@ -1,6 +1,7 @@
 Sequentially Achieve:
 ✔ Should be able to solve problems relating to count recursively. @done(20-04-08 00:19)
-☐ Solve all kinds of problems: upto 20
+✔ Solve all kinds of problems: upto 20 @done(20-04-13 12:11)
 ☐ Bee able to move from count to actual ocurrences. eg all lcs in lcs problem
 ☐ Edit all dp code to list out all soulutions and not just count.
 ☐ Optimize all solutions to skip obviously non optimal solutions.
+☐ Become a pro in iterative as well as recursive approach.
