@@ -28,8 +28,8 @@ class KnightsTour:
             if no_unvisited:
                 new_matrix = [[_["step"] for _ in i] for i in self.matrix]
                 print(new_matrix)
-                import time
-                time.sleep(10)
+                # import time
+                # time.sleep(10)
             return
         step += 1
         ways = [(1,2), (-1,2), (1,-2), (-1,-2), (2,1), (-2,1), (2,-1), (-2,-1)]

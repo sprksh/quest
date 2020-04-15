@@ -16,11 +16,6 @@ class newNode:
     def __repr__(self):
         return str(self.key)
 
-def n_queens(n):
-    # backtracking
-    pass
-
-
 def tree_sum(root):
     if root is None:
         return 0
@@ -37,22 +32,26 @@ def max_path_sum(root):
         return node.key + l if l > r else node.key + r
 
     max_path_sum = sub_tree_sum(root)
-    return max_path_sum
+    return max_path_sum 
 
 
 def max_sum_path(root):
-    # needs to return path, no idea how
-    # this page contains a solution but try
-    # https://www.techiedelight.com/find-maximum-sum-root-to-leaf-path-binary-tree/
+    actual_path = []
     def sub_tree_sum(node):
         if node is None:
             return 0
         l = sub_tree_sum(node.left)
         r = sub_tree_sum(node.right)
-        return node.key + l if l > r else node.key + r
+        
+        maximum = node.key + l if l > r else node.key + r
+        actual_path.append(node.left if l > r else node.right)
+        
+        return maximum
 
     max_path_sum = sub_tree_sum(root)
-    return max_path_sum
+    actual_path = [_ for _ in actual_path if _]
+    actual_path.append(root)
+    return max_path_sum, actual_path
 
 
 if __name__ == '__main__':
@@ -65,6 +64,6 @@ if __name__ == '__main__':
     root.right.right = newNode(7)
     root.right.left.right = newNode(12)
 
-    sum = max_path_sum(root)
+    max_sum, path = max_sum_path(root)
 
-    print(sum)
+    print(max_sum, path)
