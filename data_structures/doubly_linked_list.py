@@ -55,20 +55,25 @@ class DoublyLinkedList:
 
     def swap_pair(self, node, prev=None):
         if node is None or node.next is None:
+            prev.next = node
             return
-        current1, current2 = node, node.next
-        # outer
-        current2.prev, current1.next = prev, current2.next
-        # inner
-        current2.next, current1.prev = current1.next, current2.prev
+        """
+        make current2 the prior node and current1 the later
+        prev.next = current2
+        """
+        current1, current2, next = node, node.next, node.next.next
+        current2.prev, current2.next = prev, current1
+        current1.prev = current2
         if prev is not None:
             prev.next = current2
-        self.swap_pair(next, current2)
-        return self.head.prev
+        else:
+            self.head = current2
+        self.swap_pair(next, current1)
+        return self.head
 
 
 def test_dll():
-    dll = DoublyLinkedList.convert_arr_to_dll([1,2,3,4,5,6,7])
+    dll = DoublyLinkedList.convert_arr_to_dll([1,2,3,4,5,6,7, 8])
     print(dll)
     # dll.head = dll.reverse()
     # print(dll)
