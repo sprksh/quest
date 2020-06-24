@@ -11,6 +11,28 @@ class Node:
 class LinkedList: 
     def __init__(self): 
         self.head = None # Head of list 
+    
+    # Returns the linked list in display format 
+    def __str__(self): 
+        linkedListStr = "" 
+        temp = self.head 
+        while temp:
+            linkedListStr = (linkedListStr + str(temp.data) + " ")
+            temp = temp.next
+        return linkedListStr
+  
+    # Pushes new data to the head of the list 
+    def push(self, data): 
+        temp = Node(data) 
+        temp.next = self.head 
+        self.head = temp
+    
+    @staticmethod
+    def convert_arr_to_linked_list(arr):
+        ll = LinkedList()
+        for i in arr[::-1]:
+            ll.push(i)
+        return ll
   
     def reverse_normal(self, prev=None):
         # head = self.head
@@ -96,32 +118,14 @@ class LinkedList:
             
         return head
 
-  
-    # Returns the linked list in display format 
-    def __str__(self): 
-        linkedListStr = "" 
-        temp = self.head 
-        while temp: 
-            linkedListStr = (linkedListStr + str(temp.data) + " ") 
-            temp = temp.next
-        return linkedListStr 
-  
-    # Pushes new data to the head of the list 
-    def push(self, data): 
-        temp = Node(data) 
-        temp.next = self.head 
-        self.head = temp
-    
-    @staticmethod
-    def convert_arr_to_linked_list(arr):
-        ll = LinkedList()
-        for i in arr[::-1]:
-            ll.push(i)
-        return ll
+    def check_if_sorted(self, current=None):
+        if current is None or current.next is None:
+            return True
+        return self.check_if_sorted(current.next) and current.data >= current.next.data
 
 
-def test_reverse_ll():
-    linkedList = LinkedList.convert_arr_to_linked_list([1, 2, 3,4,5, 6, 7, 8, 9])
+def test_linked_list():
+    linkedList = LinkedList.convert_arr_to_linked_list([5,6,3,2,1])
     print("Given linked list: ", linkedList) 
 
     # linkedList.head = linkedList.reverse_normal()
@@ -129,10 +133,12 @@ def test_reverse_ll():
     # print("Reversed linked list: ", linkedList)
     # linkedList.head = linkedList.swap_pairwise()
     # print("Pairwise Reversed linked list: ", linkedList)
-    linkedList.head = linkedList.swap_n(5)
-    print("N swapped linked list: ", linkedList)
+    # linkedList.head = linkedList.swap_n(5)
+    # print("N swapped linked list: ", linkedList)
+    _sorted = linkedList.check_if_sorted(linkedList.head)
+    print("Sorted: ", _sorted)
 
     
 
 if __name__ == "__main__":
-    test_reverse_ll()
+    test_linked_list()
