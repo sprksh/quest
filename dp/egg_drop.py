@@ -7,7 +7,7 @@ recursively find all solutions and find best
 
 min_trials(floor, eggs) :-> minimum number of trials needed to find the optimal floor in worst case
 
-lets drop it from x: 1
+lets drop it from x: 1 trial
 either breaks: min_trials(x-1, n-1)
 or doesn't breaks: min_trials(k-x, n)
 for given x: 
@@ -25,11 +25,9 @@ def min_trials(k, n):
     if n == 1:
         return k
     for x in range(1, k+1):
-        y = 1
         _minimum_trials = 1 + max(min_trials(x-1, n-1), min_trials(k-x, n))
         if _minimum_trials < minimum_trials:
             minimum_trials = _minimum_trials
-            y = x
     min_trials_cache[(k,n)] = minimum_trials
     return minimum_trials
 
