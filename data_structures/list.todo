@@ -1,16 +1,13 @@
 ✔ Linkedlist @done(20-06-24 14:17)
 ✔ Doubly linked Linkedlist @done(20-06-24 14:17)
 ☐ Circular linked list
-☐ Stack
-☐ Queue
-☐ Heap
-☐ REd black tree
-☐ matrix
+✔ Stack & Queue @done(20-07-19 08:51)
+✔ Heap @done(20-06-28 09:37)
 ☐ B-tree
 ☐ Binary search Tree
-☐ Graph
+✔ Graph @done(20-07-19 08:51)
 ☐ Hashing
 ☐ Array
-☐ Trie
-
+✔ Trie @done(20-07-19 08:51)
+☐ matrix
 
