@@ -22,9 +22,12 @@ def tree_sum(root):
     return root.key + tree_sum(root.left) + tree_sum(root.right)
 
 
+
+# this is plain recursion
+
 def max_path_sum(root):
-    # base case
     def sub_tree_sum(node):
+        # base case
         if node is None:
             return 0
         l = sub_tree_sum(node.left)
