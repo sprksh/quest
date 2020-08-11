@@ -13,6 +13,7 @@ Bank:
 
 """
 import random
+import threading
 import datetime
 from lld.banking.banking_system import BankingSystem
 
@@ -74,7 +75,7 @@ class Bank:
         print("Bank registered with central banking system")
 
     def __repr__(self):
-        return "Name: %s-%s \n Id: %s" % (self.name, self.location, self.bank_id)
+        return "Name: %s-%s, Id: %s" % (self.name, self.location, self.bank_id)
 
     def register_user(self, first_name, last_name, age):
         user = User(first_name, last_name, age)
@@ -104,7 +105,9 @@ class Bank:
     def transact(self, account_id, amount: float, trxn_type: str):
         account = self.account_map.get(account_id)
         if trxn_type == 'withdraw':
+            # with threading.Lock():
             if account.balance >= amount and self.check_vault_balance() >= amount:
+                # import time; time.sleep(0.01)
                 return self._withdraw(account, amount)
             else:
                 print(f'Sorry, Transaction denied')
@@ -118,6 +121,8 @@ class Bank:
         trxn = Transaction(account_id=account.account_id, amount=-amount)
         account.balance -= amount
         account.transactions.append(trxn)
+        self.check_vault_balance()
+        self.check_balance(account.account_id)
         return trxn
 
     def _deposit(self, account, amount):
@@ -131,11 +136,14 @@ class Bank:
         self.vault -= amount
 
     def check_vault_balance(self):
-        print(f"Current balance for account: {self.vault}")
+        if self.vault < 0:
+            print(f"-------Current balance of bank {self} : {self.vault}")
         return self.vault
 
     def check_balance(self, account_id):
         account = self.account_map.get(account_id)
         if account:
+            if account.balance < 0:
+                print(f"--------Current acc balance {account_id}: {account.balance}")
             print(f"Current balance for account {account_id}: {account.balance}")
-        return 
+            return account.balance
