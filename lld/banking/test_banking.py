@@ -82,6 +82,29 @@ def test_multithreaded():
     
     print(f"Current Balance in bank vault {bank.check_vault_balance()}")
 
+
+def test_race_condition():
+    bank1 = Bank.bank_factory('SBI', 'Delhi', 1)
+    counter1 = BankCounter(bank1)
+    atm1 = ATM(1)
+
+    first_name, last_name, age = 'Surya', 'Prakash', 28
+    account1_id = counter1.open_account(first_name, last_name, age)
+    # counter1.check_balance(account1_id, last_name=last_name)
+
+    counter1.deposit(account1_id, 10000.0)
+    # counter1.check_balance(account1_id, last_name=last_name)
+
+    thread1 = threading.Thread(target = atm1.withdraw, args = (bank1.bank_id, account1_id, last_name, 10000, ))
+    # import time; time.sleep(1)
+    thread2 = threading.Thread(target = atm1.withdraw, args = (bank1.bank_id, account1_id, last_name, 10000, ))
+    thread1.start()
+    thread2.start()
+
+    thread2.join()
+    thread1.join()
+
+    atm1.check_balance(bank1.bank_id, account1_id, last_name)
             
 if __name__ == "__main__":
     test_single_bank()

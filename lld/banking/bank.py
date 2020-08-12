@@ -59,6 +59,7 @@ class Bank:
         self.accounts = []
         self.account_map = {}
         self.vault = 0
+        self.lock = threading.Lock()
 
     @staticmethod
     def bank_factory(name, location, bank_id):
@@ -105,13 +106,13 @@ class Bank:
     def transact(self, account_id, amount: float, trxn_type: str):
         account = self.account_map.get(account_id)
         if trxn_type == 'withdraw':
-            # with threading.Lock():
-            if account.balance >= amount and self.check_vault_balance() >= amount:
-                # import time; time.sleep(0.01)
-                return self._withdraw(account, amount)
-            else:
-                print(f'Sorry, Transaction denied')
-                return None
+            with self.lock:
+                if account.balance >= amount and self.check_vault_balance() >= amount:
+                    import time; time.sleep(0.01)
+                    return self._withdraw(account, amount)
+                else:
+                    print(f'Sorry, Transaction denied')
+                    return None
 
         if trxn_type == 'deposit':
             return self._deposit(account, amount)
