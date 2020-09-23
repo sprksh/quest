@@ -21,8 +21,5 @@ def binary_search(array, target, start_index=0, end_index=None, step=0):
     binary_search(array, target, start_index, end_index, step+1)
     return
 
-
-
-
 if __name__ == "__main__":
     print(binary_search(list(range(15, 400)), 5))

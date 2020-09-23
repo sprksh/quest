@@ -1,3 +1,4 @@
+# from gevent import monkey; monkey.patch_all()
 import signal
 import sys
 import asyncio
@@ -29,7 +30,7 @@ async def get_json(client, url):
         return await response.read()
 
 async def get_reddit_top(subreddit, client):
-    data = await get_json_sync(client, 'https://www.reddit.com/r/' + subreddit + '/top.json?sort=top&t=day&limit=5')
+    data = await get_json_async(client, 'https://www.reddit.com/r/' + subreddit + '/top.json?sort=top&t=day&limit=5')
     # if not client == '':
     #     j = json.loads(data.decode('utf-8'))
     # else:
@@ -55,3 +56,38 @@ async def runner():
 
 if __name__ == '__main__':
     asyncio.run(runner())
+
+def sender():
+    import socket
+
+    sock = socket.socket()
+
+    host = socket.gethostbyname('')
+    sock.connect((host, 12345))
+    sock.setblocking(1)		
+
+    # Or simply omit this line as by default TCP sockets
+    # are in blocking mode
+
+    data = "Hello Python\n" *10*1024*1024	# Huge amount of data to be sent
+    assert sock.send(data)			        # Send data till true
+
+def receiver():
+    import socket
+    s = socket.socket()
+    host = socket.gethostbyname('')
+    port = 12345
+
+    s.bind((host,port))
+    s.listen(5)
+
+    while True:
+        conn, addr = s.accept()		# accept the connection
+        
+        data = conn.recv(1024)	
+        while data:			        # till data is coming
+            print(data)
+            data = conn.recv(1024)
+        print("All Data Received")	# Will execute when all data is received
+        conn.close()
+        break
