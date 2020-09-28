@@ -7,22 +7,15 @@
 def solve_knapsack(profits, weights, capacity):
     max_profit_cache = {}
     def knapsack_recursive(profits, weights, capacity, currentIndex):
-        # base checks
         if capacity <= 0 or currentIndex >= len(profits): return 0
-
-        # recursive call after choosing the element at the currentIndex
-        # if the weight of the element at currentIndex exceeds the capacity, we  shouldn't process this
         if currentIndex in max_profit_cache: return max_profit_cache[currentIndex]
-        profit1 = 0
+        # profit1 = 0
         if weights[currentIndex] <= capacity:
             profit1 = profits[currentIndex] + knapsack_recursive(profits, weights, capacity - weights[currentIndex], currentIndex + 1)
-
-        # recursive call after excluding the element at the currentIndex
         profit2 = knapsack_recursive(profits, weights, capacity, currentIndex + 1)
-        max_profit_at_i = max(profit1, profit2)
-        max_profit_cache[currentIndex] = max_profit_at_i
+        max_profit_cache[currentIndex] = max(profit1, profit2)
         print(max_profit_cache)
-        return max_profit_at_i
+        return max_profit_cache[currentIndex]
     return knapsack_recursive(profits, weights, capacity, 0)
 
 
