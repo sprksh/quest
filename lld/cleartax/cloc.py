@@ -1,6 +1,5 @@
 import os
 
-
 """
 Cleartax lld test:
 estimate lines of code
@@ -9,13 +8,12 @@ should return:
     code lines
     comment lines
     total lines
-
 """
 
 """ Another test comment """
 # Yet another
 
-class CLOC:
+class CLOCImplementation:
 
     java_multiline_comment_start = '/*'
     java_multiline_comment_end = '*/'
@@ -23,9 +21,14 @@ class CLOC:
     python_multiline_comment_start = ('"""', "'''")
     python_multiline_comment_end = ('"""', "'''")
     python_single_line_comment_start = '#'
+    python_multiline_comment_string_length = 3
+    java_multiline_comment_string_length = 2
     
     @staticmethod
-    def cloc_simple(file, multiline_comment_start, multiline_comment_end, single_line_comment_start):
+    def cloc_simple(
+        file, multiline_comment_start, multiline_comment_end, single_line_comment_start,
+        multiline_comment_lenght
+        ):
         """
         can be used with python and java
         """
@@ -40,7 +43,7 @@ class CLOC:
                     within_comment_block = False
             elif line.startswith(multiline_comment_start):
                 comment += 1
-                if len(line) == 3 or not line.endswith(multiline_comment_end):
+                if len(line) == multiline_comment_lenght or not line.endswith(multiline_comment_end):
                     within_comment_block = True
             elif line.startswith(single_line_comment_start):
                 comment += 1
@@ -52,12 +55,47 @@ class CLOC:
             }
 
     @staticmethod
-    def cloc_concrete_another():
+    def cloc_python():
+        def wrapper(file):
+            return CLOCImplementation.cloc_simple(
+                    file, 
+                    CLOCImplementation.python_multiline_comment_start, 
+                    CLOCImplementation.python_multiline_comment_end,
+                    CLOCImplementation.python_single_line_comment_start,
+                    CLOCImplementation.python_multiline_comment_string_length
+                )
+        return wrapper
+
+    @staticmethod
+    def cloc_java():
+        def wrapper(file):
+            return CLOCImplementation.cloc_simple(
+                    file, 
+                    CLOCImplementation.java_multiline_comment_start, 
+                    CLOCImplementation.java_multiline_comment_end,
+                    CLOCImplementation.java_single_line_comment_start,
+                    CLOCImplementation.java_multiline_comment_string_length
+                )
+        return wrapper
+
+    @staticmethod
+    def another_cloc_concrete():
         return {}
 
-class LineCounter:
-    def __init__(self):
-        pass
+    @staticmethod
+    def base_counter(file):
+        return {}
+
+
+class LineCounterStrategy:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.language = self.get_language_from_file_name(file_path)
+        self.counter = CLOCImplementation.base_counter
+        if self.language == 'python':
+            self.counter = CLOCImplementation.cloc_python()
+        if self.language == 'java':
+            self.counter = CLOCImplementation.cloc_java()
 
     @staticmethod
     def get_language_from_file_name(file_path):
@@ -67,26 +105,11 @@ class LineCounter:
         if extension == 'java':
             return 'java'
 
-    
-    def count(self, file_path):
+    def count(self):
+        file_path = self.file_path
         language = self.get_language_from_file_name(file_path)
-        file = open(file_path, 'r')
-        # returns file_iterator
-        count_dict = {}
-        if language == 'python':
-            count_dict = CLOC.cloc_simple(
-                file, 
-                CLOC.python_multiline_comment_start, 
-                CLOC.python_multiline_comment_end,
-                CLOC.python_single_line_comment_start
-            )
-        if language == 'java':
-            count_dict = CLOC.cloc_simple(
-                file, 
-                CLOC.java_multiline_comment_start, 
-                CLOC.java_multiline_comment_end,
-                CLOC.java_single_line_comment_start
-            )
+        file = open(file_path, 'r') # returns file_iterator
+        count_dict = self.counter(file)
         return language, count_dict
 
 
@@ -104,7 +127,7 @@ class LinesOfCodeEstimator:
     def estimate_lines_of_code_in_path(self, path):
         # print(path)
         if os.path.isfile(path):
-            language, count_dict = LineCounter().count(path)
+            language, count_dict = LineCounterStrategy(path).count()
             self.update_estimate(language, count_dict)
             return
         
