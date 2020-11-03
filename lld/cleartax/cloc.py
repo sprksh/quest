@@ -78,8 +78,9 @@ class CLOCImplementation:
                 )
         return wrapper
 
+
     @staticmethod
-    def another_cloc_concrete():
+    def cloc_ruby():
         return {}
 
     @staticmethod
@@ -96,6 +97,8 @@ class LineCounterStrategy:
             self.counter = CLOCImplementation.cloc_python()
         if self.language == 'java':
             self.counter = CLOCImplementation.cloc_java()
+        if self.language == 'ruby':
+            self.counter = CLOCImplementation.cloc_ruby
 
     @staticmethod
     def get_language_from_file_name(file_path):
@@ -104,6 +107,8 @@ class LineCounterStrategy:
             return 'python'
         if extension == 'java':
             return 'java'
+        if extension == 'rb':
+            return 'ruby'
 
     def count(self):
         file_path = self.file_path
@@ -137,3 +142,24 @@ class LinesOfCodeEstimator:
             entry = os.path.join(path, entry)
             self.estimate_lines_of_code_in_path(entry)
         return self.estimate
+
+
+def test_python_counter():
+    data = '''
+    """
+        Cleartax lld test:
+        estimate lines of code
+        should return:
+            empty lines
+            code lines
+            comment lines
+            total lines
+        """
+
+        """ Another test comment """
+        # Yet another
+
+    '''
+    counter = CLOCImplementation.cloc_python()
+    data_dict = counter(data.splitlines())
+    print(data_dict)
