@@ -39,3 +39,5 @@ reports_month_end/
 config/local.py
 /venv/
 /testing_scripts/test_data/
+
+plan*
